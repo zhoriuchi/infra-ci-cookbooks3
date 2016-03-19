@@ -1,0 +1,51 @@
+machine:
+   ruby:
+      version: 2.0.0
+   environment:
+      TERRAFORM_VERSION: 0.6.6
+
+general:
+  artifacts:
+    - "logs"
+
+dependencies:
+  cache_directories:
+    - ~/.terraform
+  pre:
+    # circle ci error by knife old version
+    - gem clean knife-solo
+    - gem install knife-solo
+    - |
+      mkdir -p $HOME/.terraform
+      if [ -z "$(ls -A $HOME/.terraform)" ]; then
+        cd $HOME/.terraform
+        # not found1
+        #curl -LO https://dl.bintray.com/mitchellh/terraform/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+        curl -LO https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip 
+        unzip -o terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+        rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+      fi
+    - sudo cp -fR ~/.terraform/* /usr/local/bin
+
+test:
+   pre:
+     - ./scripts/circleci-test-pre.sh
+     # Waiting new server
+     - sleep 30
+   override:
+     - ./scripts/circleci-test-override.sh
+   post:
+     - ./scripts/circleci-test-override.sh
+
+deployment:
+   qa-webapp:
+      branch: deployment/qa-webapp
+      commands:
+         - bundle exec knife solo cook --no-berkshelf knife-user@128.199.157.27:
+            timeout: 600
+
+   production-webapp:
+      branch: deployment/production-webapp
+      commands:
+         - bundle exec knife solo cook --no-berkshelf knife-user@188.166.233.93:
+            timeout: 600
