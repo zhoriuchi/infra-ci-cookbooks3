@@ -37,7 +37,7 @@ test:
    override:
      - ./scripts/circleci-test-override.sh
    post:
-     - ./scripts/circleci-test-override.sh
+     - ./scripts/circleci-test-post.sh
 
 deployment:
    qa-webapp:
