@@ -32,7 +32,7 @@ dependencies:
 test:
    pre:
      - ./scripts/circleci-test-pre.sh
-     # Waiting new server
+     ## Waiting new server
      - sleep 30
    override:
      - ./scripts/circleci-test-override.sh
