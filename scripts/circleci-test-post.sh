@@ -8,5 +8,5 @@ then
    exit 0
 fi
 
-terraform plan -destroy 
-terraform destroy -force 
+#terraform plan -destroy 
+#terraform destroy -force 
