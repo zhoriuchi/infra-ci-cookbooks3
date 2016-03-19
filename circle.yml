@@ -44,10 +44,10 @@ deployment:
       branch: deployment/qa-webapp
       commands:
          - bundle exec knife solo cook --no-berkshelf knife-user@128.199.157.27:
-            timeout: 600
+            timeout: 300
 
    production-webapp:
       branch: deployment/production-webapp
       commands:
          - bundle exec knife solo cook --no-berkshelf knife-user@188.166.233.93:
-            timeout: 600
+            timeout: 300
